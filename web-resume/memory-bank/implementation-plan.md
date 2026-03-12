@@ -29,8 +29,8 @@
 npm create vite@latest . -- --template react
 npm install three @react-three/fiber @react-three/drei
 npm install framer-motion
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+npm install react-router-dom
+npm install -D tailwindcss @tailwindcss/vite
 ```
 
 **验证方法**：
@@ -43,11 +43,14 @@ npx tailwindcss init -p
 ### 步骤1.2：配置Tailwind CSS
 
 **任务描述**：
-1. 配置 tailwind.config.js
+1. 配置 vite.config.js 使用 @tailwindcss/vite 插件
 2. 配置 index.css 引入Tailwind
 3. 验证Tailwind正常工作
 
 **执行步骤**：
+1. 安装 `@tailwindcss/vite` 插件
+2. 编辑 vite.config.js，添加 tailwindcss() 插件
+3. 编辑 src/index.css，添加 `@import "tailwindcss";`
 1. 编辑 tailwind.config.js，配置 content 路径
 2. 编辑 src/index.css，添加Tailwind指令
 3. 添加一个测试div验证样式生效
