@@ -149,3 +149,162 @@ src/
 - 3D 组件放在 components/3D/
 - 页面场景组件放在 components/scenes/
 - 页面组件放在 pages/
+
+## 完整文件说明
+
+### 入口文件
+
+#### main.jsx
+- 应用入口点
+- 使用 React 18+ 的 createRoot API
+- 渲染 App 组件到 DOM
+
+#### index.css
+- 全局样式文件
+- 引入 Tailwind CSS：`@import "tailwindcss"`
+- 设置 body 背景色和默认字体
+
+### 页面组件
+
+#### About.jsx
+- 关于页面主组件
+- 整合 Skills 和 Timeline 子组件
+- 使用 Framer Motion 实现页面级入场动画
+- 路由路径：/about
+
+#### Projects.jsx
+- 项目展示页面
+- 包含项目数据数组（4个分类：Web/App/Game/AI）
+- ProjectCard 组件：单个项目卡片，悬停上移效果
+- ProjectModal 组件：项目详情弹窗
+- 分类筛选功能：All/Web/App/Game/AI
+- AnimatePresence 实现筛选过渡动画
+- 路由路径：/projects
+
+#### Contact.jsx
+- 联系页面
+- 包含联系表单（name/email/message 字段）
+- 表单验证逻辑（必填 + email 格式）
+- 社交媒体图标：GitHub/LinkedIn/Twitter/Email
+- 路由路径：/contact
+
+### UI 组件
+
+#### Header.jsx
+- 顶部固定导航栏
+- Logo + 4个导航链接（Home/About/Projects/Contact）
+- 使用 React Router 的 NavLink 组件
+- useLocation 检测当前路由实现高亮
+- backdrop-blur 毛玻璃效果
+- 响应式：移动端缩小尺寸
+
+#### Footer.jsx
+- 页脚组件
+- 显示版权信息
+- 固定在页面底部
+
+#### Skills.jsx
+- 技能卡片展示组件
+- 接收 skills 数组作为数据
+- 每个卡片包含：技能名、进度条、分类标签
+- Framer Motion staggered 入场动画
+- 进度条动画：0% → 目标值
+- 响应式布局：移动端1列，桌面端2列
+
+#### Timeline.jsx
+- 垂直时间轴组件
+- 接收 timeline 数组作为数据
+- 每项：年份、职位、公司、描述
+- 左侧竖线 + 圆点设计
+- 滚动入场动画（staggered delay）
+
+#### LoadingScreen.jsx
+- 初始加载界面
+- 显示时机：应用首次加载时
+- 3D 动画：八面体 + 圆环旋转（R3F Canvas）
+- LoadingBar 组件：显示加载百分比
+- setInterval 定时器模拟加载进度（约2秒）
+- AnimatePresence 实现淡出效果
+- 重要：必须在 Canvas 外部使用 state 管理进度
+
+#### PageLoader.jsx
+- 懒加载时的加载动画
+- 旋转 spinner 动画
+- 用于 Suspense 的 fallback
+
+### 3D 组件
+
+#### CanvasWrapper.jsx
+- R3F Canvas 容器
+- 配置：camera [0,0,5], fov 75, dpr [1,2]
+- powerPreference: "high-performance"
+- AmbientLight (0.5) + DirectionalLight
+- OrbitControls：鼠标拖拽旋转视角
+- Effects 组件：后处理效果
+- 响应式：移动端 dpr [1,1.5]，禁用抗锯齿和阴影
+
+#### Avatar.jsx
+- 3D 头像占位（几何体组合）
+- 球体：身体，MeshStandardMaterial
+- 方块：头部，MeshStandardMaterial
+- useFrame 旋转动画
+- onPointerOver/Out 悬停事件
+- useCursor 改变鼠标指针
+- MathUtils.lerp 平滑缩放动画
+
+#### ParticleSystem.jsx
+- 背景粒子系统
+- BufferGeometry + BufferAttribute 优化
+- 800个粒子（移动端400）
+- Float32Array 存储位置和颜色
+- 缓慢旋转动画
+- pointer-events: none 不阻挡交互
+
+#### ModelLoader.jsx
+- GLTF 模型加载器
+- 使用 @react-three/drei 的 useGLTF
+- 错误处理：scene.visible = false
+- 可扩展支持 DRACOLoader
+
+#### RotatingBox.jsx
+- 开发调试用的旋转立方体
+- useFrame 旋转动画
+- 简单的 geometry/material 清理
+
+#### Effects.jsx
+- 后处理效果组件
+- @react-three/postprocessing
+- EffectComposer 管理效果链
+- Bloom：intensity 0.5, luminanceThreshold 0.6
+- Vignette：offset 0.3, darkness 0.6
+- ChromaticAberration：offset [0.0005, 0.0005]
+- useDevicePerformance 检测设备，移动端/低端禁用
+
+### 场景组件
+
+#### HomeScene.jsx
+- 首页完整场景
+- 绝对定位：Canvas背景 + 文字内容层
+- 关键：文字层 pointer-events-none 允许事件穿透
+- 整合 Avatar + ParticleSystem
+- useDevicePerformance 响应式适配
+
+### Hooks
+
+#### useDevicePerformance.js
+- 设备性能检测 Hook
+- 检测方式：
+  - 屏幕宽度 < 768px → isMobile
+  - 硬件核心数 <= 4 或内存 <= 4GB → isLowEnd
+- 返回值：{ isMobile, isLowEnd, pixelRatio }
+- 用于 CanvasWrapper 和 HomeScene 渲染参数调整
+
+### 路由配置
+
+#### App.jsx
+- 根组件
+- React Router 配置路由
+- React.lazy 懒加载页面组件
+- Suspense 边界 + PageLoader
+- AnimatePresence 页面过渡
+- 路由列表：/, /about, /projects, /contact
