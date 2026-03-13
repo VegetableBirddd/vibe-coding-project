@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -52,10 +52,22 @@ function LoadingScene() {
 
 export function LoadingScreen() {
   const [isLoading, setIsLoading] = useState(true)
+  const [progress, setProgress] = useState(0)
 
-  setTimeout(() => {
-    setIsLoading(false)
-  }, 2500)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval)
+          setTimeout(() => setIsLoading(false), 500)
+          return 100
+        }
+        return prev + Math.random() * 15 + 5
+      })
+    }, 200)
+
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <AnimatePresence>
@@ -66,7 +78,7 @@ export function LoadingScreen() {
           transition={{ duration: 0.5 }}
           className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gray-900"
         >
-          <div className="w-64 h-64 mb-8">
+          <div className="w-64 mb-8">
             <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
               <LoadingScene />
             </Canvas>
@@ -76,8 +88,8 @@ export function LoadingScreen() {
             <motion.div 
               className="h-full bg-gradient-to-r from-cyan-500 to-magenta-500"
               initial={{ width: 0 }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 2, ease: 'linear' }}
+              animate={{ width: `${Math.min(progress, 100)}%` }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
             />
           </div>
           
@@ -87,7 +99,7 @@ export function LoadingScreen() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Loading...
+            Loading... {Math.round(Math.min(progress, 100))}%
           </motion.p>
         </motion.div>
       )}

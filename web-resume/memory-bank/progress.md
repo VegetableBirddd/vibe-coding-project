@@ -179,6 +179,18 @@ src/
 - 进度条动画：从0%到100%，2.5秒后自动消失
 - 使用 AnimatePresence 实现淡出效果
 
+### 7.2 实现资源预加载 ✅
+- 使用 @react-three/drei useProgress 追踪真实加载进度
+- 创建 LoadingBar 组件显示实时百分比
+- 修改 LoadingScreen：显示加载进度数值
+- 添加安全超时：5秒后自动消失
+
+### 7.3 实现页面过渡动画 ✅
+- 使用 AnimatePresence mode="wait" 配置过渡
+- 为每个路由添加 motion.div 包装
+- 实现入场/退场动画：淡入淡出 + 上下位移
+- 过渡时长 0.3 秒
+
 ---
 
 ## 技术说明
