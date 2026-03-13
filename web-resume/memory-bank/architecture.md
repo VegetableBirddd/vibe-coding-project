@@ -81,6 +81,14 @@ src/
 - 页面级入场动画：标题→介绍→技能→时间轴依次淡入
 - 使用 motion 组件实现过渡效果
 
+### Projects.jsx
+- 项目展示页面，包含项目卡片网格和分类筛选
+- 数据结构：id, title, description, category, tags, image, link
+- 分类筛选：All/Web/App/Game/AI，支持筛选动画
+- ProjectCard 组件：悬停上移动画，使用 Framer Motion
+- ProjectModal 组件：点击展示项目详情模态框
+- 使用 AnimatePresence 实现筛选时的过渡动画
+
 ## 技术选型说明
 
 | 技术 | 用途 | 说明 |
