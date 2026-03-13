@@ -1,5 +1,5 @@
 import { CanvasWrapper } from '../3D/CanvasWrapper'
-import { Avatar } from '../3D/Avatar'
+import { RobotModel } from '../3D/RobotModel'
 import { ParticleSystems } from '../3D/ParticleSystems'
 import { useDevicePerformance } from '../../hooks/useDevicePerformance'
 import { useRandomParticleType } from '../../hooks/useRandomParticleType'
@@ -16,7 +16,7 @@ export function HomeScene() {
       <div className="absolute inset-0 z-0">
         <CanvasWrapper>
           <ParticleSystems type={particleType} count={particleCount} />
-          <Avatar />
+          <RobotModel position={[0, isMobile ? -1.2 : -1.5, 0]} scale={isMobile ? 0.5 : 0.8} autoRotate={false} />
         </CanvasWrapper>
       </div>
       <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center">

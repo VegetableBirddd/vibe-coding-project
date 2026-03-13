@@ -22,7 +22,9 @@ export function CanvasWrapper({ children }) {
       }}
       dpr={dpr}
     >
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={1.2} />
+      <pointLight position={[0, 0, 3]} intensity={0.8} color="#ffffff" />
+      <pointLight position={[-3, 2, 2]} intensity={0.4} color="#6366f1" />
       <directionalLight 
         position={[10, 10, 5]} 
         intensity={1}

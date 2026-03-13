@@ -19,6 +19,22 @@
 | **Tailwind CSS** | 原子化CSS | 快速开发，无需编写自定义CSS |
 | **Framer Motion** | 动画库 | 与React完美集成，声明式动画 |
 
+### 3D模型资源
+
+| 来源 | 用途 | 说明 |
+|------|------|------|
+| **Poly Haven** | 免费3D模型 | https://polyhaven.com/models，CC0/商业免费 |
+| **Sketchfab** | 模型市场 | 部分免费，需筛选授权类型 |
+| **Ready Player Me** | 人物模型 | 免费头像生成器，支持自定义 |
+
+### 3D模型格式与优化
+
+| 格式 | 用途 | 特点 |
+|------|------|------|
+| **GLB** | Web首选 | 单文件，包含几何/材质/动画 |
+| **gltf-pipeline** | 模型压缩 | Draco压缩减少文件体积 |
+| **KTX2** | 纹理压缩 | GPU高效加载，减少显存占用 |
+
 ### 性能优化工具
 
 | 技术 | 用途 |
@@ -35,6 +51,7 @@ src/
 │   ├── 3D/           # 3D组件
 │   │   ├── ParticleSystems.jsx  # 多种粒子系统集合
 │   │   ├── ParticleSystem.jsx   # 原有基础粒子系统
+│   │   ├── ModelLoader.jsx      # GLTF模型加载器
 │   │   └── ...
 │   ├── ui/           # UI组件
 │   └── scenes/       # 场景组件
@@ -42,7 +59,7 @@ src/
 │   └── useRandomParticleType.js  # 随机粒子类型选择
 ├── stores/           # 状态管理
 ├── assets/           # 静态资源
-│   └── models/       # 3D模型
+│   └── models/       # 3D模型 (.glb/.gltf)
 └── App.jsx
 ```
 

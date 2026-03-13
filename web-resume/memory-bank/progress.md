@@ -322,6 +322,16 @@ dist/assets/
 - `npm run lint` - 通过
 - `npm run build` - 构建成功
 
+#### 4. 优化灯光和交互效果
+- 修改 `CanvasWrapper.jsx`：增强环境光强度（1.2），添加两个点光源增加亮度
+- 关闭机器人自转：设置 autoRotate={false}
+- 添加自发光材质：修改模型材质增加 emissive 效果
+- 添加悬停眼睛变色：遍历模型找到头部 mesh，悬停时 emissive 变为青色
+
+#### 5. 修复路径问题
+- 模型路径需添加 base 路径前缀 `/vibe-coding-project/`
+- 修复后模型正常加载
+
 ---
 
 ## 技术说明
@@ -368,3 +378,34 @@ dist/assets/
 - ESLint 无错误
 - 生产构建成功，代码分割正常（6个chunks）
 - GitHub Pages 部署成功：https://vegetablebirddd.github.io/vibe-coding-project/
+
+---
+
+## 功能更新：添加3D机器人模型 (2026-03-13) ✅
+
+### 任务描述
+在首页添加真实的3D机器人模型，替换原来的几何体组合头像。
+
+### 实现内容
+
+#### 1. 下载3D模型
+- 来源：Google model-viewer 官方示例模型 (Apache 2.0)
+- 模型：RobotExpressive.glb (454KB)
+- 特点：带多种动画（跳舞、挥手等）
+
+#### 2. 创建 RobotModel 组件
+- 创建 `src/components/3D/RobotModel.jsx`
+- 使用 useGLTF 加载 GLB 模型
+- 使用 useAnimations 播放动画（自动播放 idle/stand 动画）
+- 自动旋转 + 悬停放大效果
+- 使用 SkeletonUtils.clone 避免共享引用问题
+- 响应式适配：移动端调整位置和大小
+
+#### 3. 集成到 HomeScene
+- 修改 `src/components/scenes/HomeScene.jsx`
+- 替换 Avatar 组件为 RobotModel
+- 适配移动端参数调整
+
+### 验证
+- `npm run lint` - 通过
+- `npm run build` - 构建成功

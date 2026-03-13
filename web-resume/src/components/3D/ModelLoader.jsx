@@ -17,4 +17,4 @@ export function ModelLoader({ url, fallback = null, onError, ...props }) {
   return <primitive object={scene.clone()} {...props} />
 }
 
-useGLTF.preload('/models/placeholder.glb')
+useGLTF.preload('/vibe-coding-project/models/placeholder.glb')

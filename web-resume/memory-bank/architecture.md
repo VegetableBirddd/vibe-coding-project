@@ -23,6 +23,7 @@ src/
 │   │   ├── ParticleSystems.jsx  # 多种炫酷粒子系统集合，支持6种效果
 │   │   ├── RotatingBox.jsx      # 旋转立方体（开发调试用）
 │   │   ├── ModelLoader.jsx      # GLTF模型加载器，使用useGLTF
+│   │   ├── RobotModel.jsx       # 3D机器人模型组件，支持动画和交互
 │   │   └── Effects.jsx          # 后处理效果组件，Bloom/Vignette/ChromaticAberration
 │   │
 │   └── scenes/               # 页面级 3D 场景
@@ -416,9 +417,10 @@ App.jsx
 4. 添加导航链接到 Header
 
 #### 添加 3D 模型
-1. 将 .glb 文件放入 src/assets/models/
-2. 使用 ModelLoader 组件加载
-3. 或使用 useGLTF hook 直接加载
+1. 将 .glb 文件放入 `public/models/` 目录
+2. 使用 ModelLoader 组件或 useGLTF hook 加载
+3. 路径需包含 base 前缀：`/vibe-coding-project/models/xxx.glb`
+4. 使用 SkeletonUtils.clone 避免共享引用问题
 
 #### 添加后处理效果
 1. 在 Effects.jsx 添加新效果
@@ -431,3 +433,72 @@ App.jsx
 - **地址**：https://vegetablebirddd.github.io/vibe-coding-project/
 - **构建命令**：`npm run build`
 - **部署命令**：`npm run deploy`（使用 gh-pages）
+
+---
+
+## RobotModel.jsx 组件详解
+
+### 功能
+- 加载并显示 GLB 格式的 3D 模型
+- 自动播放模型的 idle/stand 动画
+- 支持鼠标悬停放大交互
+- 支持悬停时改变材质颜色（眼睛/头部发光效果）
+
+### 核心实现
+```javascript
+// 使用 SkeletonUtils.clone 避免共享引用问题
+const clone = useMemo(() => SkeletonUtils.clone(scene), [scene])
+
+// 使用 useAnimations 播放模型动画
+const { actions } = useAnimations(animations, groupRef)
+
+// 遍历模型修改材质
+clone.traverse((child) => {
+  if (child.isMesh && child.material) {
+    child.material = child.material.clone()  // 必须 clone 否则影响原模型
+    child.material.emissive = new THREE.Color(0x111111)
+    child.material.emissiveIntensity = 0.6
+  }
+})
+```
+
+### 注意事项
+- 模型文件放在 `public/models/` 目录
+- 路径需要包含 base 路径前缀：`/vibe-coding-project/models/xxx.glb`
+- 使用 `SkeletonUtils.clone` 而非直接引用，避免多实例共享问题
+- 修改材质前必须先 `clone()` 材质对象
+
+---
+
+## Canvas 灯光配置详解
+
+### 当前配置
+```javascript
+<ambientLight intensity={1.2} />           // 环境光，整体亮度
+<pointLight position={[0, 0, 3]} intensity={0.8} color="#ffffff" />  // 主光源
+<pointLight position={[-3, 2, 2]} intensity={0.4} color="#6366f1" /> // 辅助蓝光
+```
+
+### 灯光调节建议
+- 机器人太暗：提高 ambientLight intensity 或添加 pointLight
+- 想要科技感：添加彩色 pointLight（如蓝色、紫色）
+- 模型本身材质暗：修改模型的 emissive 属性
+
+---
+
+## 3D 模型资源
+
+### 模型来源
+- **Google model-viewer**: https://github.com/google/model-viewer (Apache 2.0)
+- **Poly Haven**: https://polyhaven.com/models (CC0)
+- **Sketchfab**: https://sketchfab.com (需筛选免费模型)
+
+### 模型要求
+- 格式：GLB（推荐）或 GLTF
+- 文件大小：< 2MB
+- 多边形：< 50K
+- 动画：可选，带动画的模型可用 useAnimations 播放
+
+### 模型放置
+- 开发环境：`public/models/xxx.glb`
+- 构建后自动复制到 `dist/models/`
