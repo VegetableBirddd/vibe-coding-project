@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { useDevicePerformance } from '../../hooks/useDevicePerformance'
+import { Effects } from './Effects'
 
 export function CanvasWrapper({ children }) {
   const { isMobile, isLowEnd } = useDevicePerformance()
@@ -35,6 +36,7 @@ export function CanvasWrapper({ children }) {
         dampingFactor={0.05}
       />
       {children}
+      <Effects />
     </Canvas>
   )
 }

@@ -21,7 +21,8 @@ src/
 │   │   ├── Avatar.jsx           # 3D头像组件，球体+方块组合，悬停缩放交互
 │   │   ├── ParticleSystem.jsx   # 背景粒子系统，800个粒子缓慢旋转
 │   │   ├── RotatingBox.jsx      # 旋转立方体（开发调试用）
-│   │   └── ModelLoader.jsx      # GLTF模型加载器，使用useGLTF
+│   │   ├── ModelLoader.jsx      # GLTF模型加载器，使用useGLTF
+│   │   └── Effects.jsx          # 后处理效果组件，Bloom/Vignette/ChromaticAberration
 │   │
 │   └── scenes/               # 页面级 3D 场景
 │       └── HomeScene.jsx    # 首页场景，整合Canvas+Avatar+ParticleSystem
@@ -59,6 +60,7 @@ src/
 - 配置：相机位置[0,0,5]、FOV 75、dpr[1,2]、high-performance
 - 光照：AmbientLight + DirectionalLight
 - 交互：OrbitControls支持鼠标拖拽旋转
+- 后处理：集成 Effects 组件（Bloom/Vignette/ChromaticAberration）
 - 响应式适配：移动端 dpr 降至 [1,1.5]，禁用抗锯齿和阴影
 
 ### Avatar.jsx
@@ -98,6 +100,12 @@ src/
 - 进度条：使用 setInterval 定时器模拟加载进度（约2秒）
 - 动画：AnimatePresence 实现淡出效果
 - 重要：useProgress 仅在 Canvas 内部可用，外部加载需模拟
+
+### Effects.jsx
+- 后处理效果组件，使用 @react-three/postprocessing
+- 包含 Bloom（发光）、Vignette（暗角）、ChromaticAberration（色差）效果
+- 使用 useDevicePerformance 检测设备性能
+- 移动端和低端设备自动禁用，保证性能
 
 ### App.jsx
 - 根组件，配置 React Router 和全局布局

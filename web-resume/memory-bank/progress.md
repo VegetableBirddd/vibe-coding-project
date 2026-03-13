@@ -222,4 +222,23 @@ src/
 
 ---
 
+## 阶段九：后处理效果 (2026-03-13) ✅
+
+### 9.1 添加后处理基础 ✅
+- 安装 @react-three/postprocessing 和 postprocessing
+- 创建 Effects.jsx：封装后处理效果组件
+- 配置 EffectComposer 管理效果链
+
+### 9.2 实现Bloom效果 ✅
+- 添加 Bloom 效果：intensity=0.5, luminanceThreshold=0.6
+- 添加 Vignette 效果：offset=0.3, darkness=0.6
+- 添加 ChromaticAberration 效果：offset=[0.0005, 0.0005]
+
+### 9.3 优化后处理性能 ✅
+- Effects 组件检测设备性能
+- 移动端和低端设备自动禁用所有后处理效果
+- 保持桌面端完整视觉效果
+
+---
+
 ## 技术说明
