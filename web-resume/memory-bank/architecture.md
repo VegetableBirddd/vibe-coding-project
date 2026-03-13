@@ -11,7 +11,9 @@ src/
 ├── components/
 │   ├── ui/                  # 通用 UI 组件
 │   │   ├── Header.jsx       # 顶部导航栏，包含 Logo 和导航链接
-│   │   └── Footer.jsx       # 页脚，显示版权信息
+│   │   ├── Footer.jsx       # 页脚，显示版权信息
+│   │   ├── Skills.jsx       # 技能卡片组件，进度条动画
+│   │   └── Timeline.jsx     # 经历时间轴组件，垂直布局
 │   │
 │   ├── 3D/                  # 3D 渲染组件（Three.js/R3F）
 │   │   ├── CanvasWrapper.jsx    # R3F Canvas 容器，配置相机/光照/OrbitControls
@@ -60,6 +62,24 @@ src/
 - 页面布局：absolute定位的Canvas背景 + pointer-events-none的文字层
 - 关键：文字层必须设置pointer-events-none，否则阻挡Canvas事件
 - 整合所有3D组件到一个场景
+
+### Skills.jsx
+- 技能展示卡片组件，展示技能名称、等级百分比、分类
+- 使用 Framer Motion 实现 staggered 入场动画
+- 进度条动画：从0%过渡到目标值（使用 motion.div）
+- 响应式：移动端1列，桌面端2列
+- 数据结构：name(名称), level(等级), category(分类)
+
+### Timeline.jsx
+- 垂直时间轴组件，展示个人经历
+- 左侧竖线 + 圆点设计
+- 每项包含：year(年份)、title(职位)、company(公司)、description(描述)
+- 滚动入场动画，带 stagger 延迟效果
+
+### About.jsx
+- 关于页面主组件，整合 Skills 和 Timeline
+- 页面级入场动画：标题→介绍→技能→时间轴依次淡入
+- 使用 motion 组件实现过渡效果
 
 ## 技术选型说明
 
