@@ -308,3 +308,105 @@ src/
 - Suspense 边界 + PageLoader
 - AnimatePresence 页面过渡
 - 路由列表：/, /about, /projects, /contact
+
+---
+
+## 架构洞察与开发注意事项
+
+### 核心设计决策
+
+#### 1. 3D 与 2D 混合架构
+- **问题**：文字层遮挡 Canvas 事件导致 3D 交互失效
+- **解决方案**：文字层使用 `pointer-events-none`，只在特定区域启用交互
+- **关键代码**：
+  ```jsx
+  <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+    {/* 文字内容 */}
+  </div>
+  ```
+
+#### 2. R3F Hooks 使用限制
+- **问题**：`useProgress` 等 Hook 只能在 Canvas 内部使用
+- **解决方案**：Loading 进度使用外部 state + setInterval 模拟
+- **经验**：任何 R3F Hooks 都必须在 React Three Fiber 的 Canvas 组件树内调用
+
+#### 3. 性能优化策略
+| 优化项 | 实现方式 | 效果 |
+|--------|----------|------|
+| 代码分割 | React.lazy + Suspense | 初始包体积减少 |
+| 像素比限制 | dpr: [1, 2] | 避免高分屏性能问题 |
+| 响应式渲染 | useDevicePerformance | 移动端降低画质 |
+| 后处理开关 | 设备检测 | 低端设备禁用特效 |
+
+#### 4. 动画系统
+- **Framer Motion**：用于 UI 过渡、页面切换、入场动画
+- **useFrame**：用于 3D 动画（旋转、缩放）
+- **关键区别**：Framer Motion 控制 DOM 元素，useFrame 控制 Three.js 对象
+
+### 常见问题排查
+
+#### 问题1：3D 事件不触发
+- 检查父容器是否有 `pointer-events-none`
+- 检查是否有其他元素覆盖在 Canvas 上
+- 使用 `useCursor` 验证悬停状态
+
+#### 问题2：useProgress 无效
+- 原因：只能在 Canvas 内部使用
+- 解决方案：使用 setTimeout/setInterval 模拟进度
+
+#### 问题3：内存泄漏
+- 3D 组件必须在 useEffect cleanup 中 dispose geometry 和 material
+- 懒加载组件注意 Suspense 边界
+
+#### 问题4：移动端性能差
+- 检查 useDevicePerformance 返回值
+- 降低粒子数量、禁用后处理、降低 DPR
+
+### 文件依赖关系
+
+```
+App.jsx
+├── main.jsx
+├── Router (react-router-dom)
+│   ├── Lazy: HomeScene
+│   │   └── CanvasWrapper
+│   │       ├── Avatar
+│   │       ├── ParticleSystem
+│   │       └── Effects
+│   ├── Lazy: About
+│   │   ├── Skills
+│   │   └── Timeline
+│   ├── Lazy: Projects
+│   │   ├── ProjectCard
+│   │   └── ProjectModal
+│   └── Lazy: Contact
+│       └── 社交媒体图标
+├── Header
+├── Footer
+└── LoadingScreen
+```
+
+### 扩展指南
+
+#### 添加新页面
+1. 在 src/pages/ 创建新组件
+2. 在 App.jsx 添加路由：`<Route path="/new-page" element={<NewPage />} />`
+3. 使用 React.lazy 懒加载
+4. 添加导航链接到 Header
+
+#### 添加 3D 模型
+1. 将 .glb 文件放入 src/assets/models/
+2. 使用 ModelLoader 组件加载
+3. 或使用 useGLTF hook 直接加载
+
+#### 添加后处理效果
+1. 在 Effects.jsx 添加新效果
+2. 使用 EffectComposer 组合多个效果
+3. 注意性能影响，添加设备检测
+
+### 部署信息
+
+- **平台**：GitHub Pages
+- **地址**：https://vegetablebirddd.github.io/vibe-coding-project/
+- **构建命令**：`npm run build`
+- **部署命令**：`npm run deploy`（使用 gh-pages）
