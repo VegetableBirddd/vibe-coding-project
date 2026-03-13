@@ -1,13 +1,17 @@
 import { CanvasWrapper } from '../3D/CanvasWrapper'
 import { Avatar } from '../3D/Avatar'
 import { ParticleSystem } from '../3D/ParticleSystem'
+import { useDevicePerformance } from '../../hooks/useDevicePerformance'
 
 export function HomeScene() {
+  const { isMobile, isLowEnd } = useDevicePerformance()
+  const particleCount = isMobile ? 400 : isLowEnd ? 500 : 800
+
   return (
     <div className="relative h-[calc(100vh-4rem)]">
       <div className="absolute inset-0 z-0">
         <CanvasWrapper>
-          <ParticleSystem count={800} />
+          <ParticleSystem count={particleCount} />
           <Avatar />
         </CanvasWrapper>
       </div>

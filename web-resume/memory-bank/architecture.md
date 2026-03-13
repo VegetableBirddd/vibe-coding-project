@@ -10,7 +10,7 @@ src/
 │
 ├── components/
 │   ├── ui/                  # 通用 UI 组件
-│   │   ├── Header.jsx       # 顶部导航栏，包含 Logo 和导航链接
+│   │   ├── Header.jsx       # 顶部导航栏，包含 Logo 和导航链接，当前页面高亮显示
 │   │   ├── Footer.jsx       # 页脚，显示版权信息
 │   │   ├── Skills.jsx       # 技能卡片组件，进度条动画
 │   │   ├── Timeline.jsx     # 经历时间轴组件，垂直布局
@@ -31,7 +31,8 @@ src/
 │   ├── Projects.jsx        # 项目页面，项目卡片网格
 │   └── Contact.jsx         # 联系页面，表单
 │
-├── hooks/                   # 自定义 React Hooks（待开发）
+├── hooks/                   # 自定义 React Hooks
+│   └── useDevicePerformance.js  # 设备性能检测，识别移动端/低性能设备
 │
 ├── stores/                  # 状态管理（待开发，可选 Zustand/Context）
 │
@@ -41,11 +42,24 @@ src/
 
 ## 核心组件说明
 
+### useDevicePerformance.js
+- 自定义 Hook，检测设备性能等级
+- 检测方式：屏幕宽度 < 768px 判断为移动端，硬件核心数 <= 4 或内存 <= 4GB 判断为低端设备
+- 返回值：{ isMobile, isLowEnd, pixelRatio }
+- 用途：CanvasWrapper 和 HomeScene 根据设备性能调整渲染参数
+
+### Header.jsx
+- 顶部导航栏组件，固定定位
+- NavLink 子组件：使用 useLocation 检测当前路由，active 状态显示 cyan-400 颜色 + 粗体
+- 响应式：移动端减小字号、内边距、间距
+- 布局：Logo 在左，导航链接在右，使用 backdrop-blur 毛玻璃效果
+
 ### CanvasWrapper.jsx
 - R3F Canvas容器，处理WebGL上下文
 - 配置：相机位置[0,0,5]、FOV 75、dpr[1,2]、high-performance
 - 光照：AmbientLight + DirectionalLight
 - 交互：OrbitControls支持鼠标拖拽旋转
+- 响应式适配：移动端 dpr 降至 [1,1.5]，禁用抗锯齿和阴影
 
 ### Avatar.jsx
 - 3D头像占位，由球体(身体)和方块(头部)组成
@@ -63,6 +77,7 @@ src/
 - 页面布局：absolute定位的Canvas背景 + pointer-events-none的文字层
 - 关键：文字层必须设置pointer-events-none，否则阻挡Canvas事件
 - 整合所有3D组件到一个场景
+- 响应式适配：使用 useDevicePerformance 检测设备，移动端粒子数从800降至400
 
 ### Skills.jsx
 - 技能展示卡片组件，展示技能名称、等级百分比、分类
@@ -86,6 +101,8 @@ src/
 
 ### App.jsx
 - 根组件，配置 React Router 和全局布局
+- 懒加载：使用 React.lazy + Suspense 分割页面代码（HomeScene, About, Projects, Contact）
+- PageLoader：懒加载时的加载动画组件（旋转 spinner）
 - AnimatedRoutes：使用 AnimatePresence + motion.div 实现页面过渡
 - 过渡模式：mode="wait" 确保当前页面退出后再进入新页面
 - 动画效果：opacity 0→1 + y 20→0，时长 0.3 秒

@@ -1,12 +1,22 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { Suspense, lazy } from 'react'
 import { Header } from './components/ui/Header'
 import { Footer } from './components/ui/Footer'
 import { LoadingScreen } from './components/ui/LoadingScreen'
-import { HomeScene } from './components/scenes/HomeScene'
-import { About } from './pages/About'
-import { Projects } from './pages/Projects'
-import { Contact } from './pages/Contact'
 import { motion, AnimatePresence } from 'framer-motion'
+
+const HomeScene = lazy(() => import('./components/scenes/HomeScene').then(module => ({ default: module.HomeScene })))
+const About = lazy(() => import('./pages/About').then(module => ({ default: module.About })))
+const Projects = lazy(() => import('./pages/Projects').then(module => ({ default: module.Projects })))
+const Contact = lazy(() => import('./pages/Contact').then(module => ({ default: module.Contact })))
+
+function PageLoader() {
+  return (
+    <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  )
+}
 
 function AnimatedRoutes() {
   const location = useLocation()
@@ -23,7 +33,9 @@ function AnimatedRoutes() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <HomeScene />
+              <Suspense fallback={<PageLoader />}>
+                <HomeScene />
+              </Suspense>
             </motion.div>
           } 
         />
@@ -36,7 +48,9 @@ function AnimatedRoutes() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <About />
+              <Suspense fallback={<PageLoader />}>
+                <About />
+              </Suspense>
             </motion.div>
           } 
         />
@@ -49,7 +63,9 @@ function AnimatedRoutes() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <Projects />
+              <Suspense fallback={<PageLoader />}>
+                <Projects />
+              </Suspense>
             </motion.div>
           } 
         />
@@ -62,7 +78,9 @@ function AnimatedRoutes() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <Contact />
+              <Suspense fallback={<PageLoader />}>
+                <Contact />
+              </Suspense>
             </motion.div>
           } 
         />
@@ -77,7 +95,7 @@ function App() {
       <LoadingScreen />
       <div className="min-h-screen bg-gray-900 text-white">
         <Header />
-        <main className="pt-16">
+        <main className="pt-14 md:pt-16">
           <AnimatedRoutes />
         </main>
         <Footer />
