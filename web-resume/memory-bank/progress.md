@@ -147,4 +147,28 @@ src/
 
 ---
 
+### 6.1 Lint错误修复 (2026-03-13) ✅
+- 修复 ModelLoader.jsx：移除effect中的setState，直接使用scene判断
+- 修复 ParticleSystem.jsx：使用seededRandom函数替代Math.random
+- 修复 RotatingBox.jsx：在effect cleanup中保存ref到变量
+
+---
+
+## 阶段六：页面开发 - 联系 (2026-03-13) ✅
+
+### 6.1 联系页面框架 ✅
+- 已有基础表单结构
+
+### 6.2 实现联系表单验证和动画 ✅
+- 表单验证：name/email/message必填，email格式验证
+- 错误提示：实时显示验证错误
+- 提交反馈：成功提交后显示确认信息
+- 入场动画：使用Framer Motion实现依次淡入
+
+### 6.3 添加社交媒体图标 ✅
+- GitHub、LinkedIn、Twitter、Email图标
+- 悬停效果：背景色变化
+
+---
+
 ## 技术说明

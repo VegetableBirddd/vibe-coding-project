@@ -5,10 +5,11 @@ export function RotatingBox() {
   const meshRef = useRef()
 
   useEffect(() => {
+    const mesh = meshRef.current
     return () => {
-      if (meshRef.current) {
-        meshRef.current.geometry?.dispose()
-        meshRef.current.material?.dispose()
+      if (mesh) {
+        mesh.geometry?.dispose()
+        mesh.material?.dispose()
       }
     }
   }, [])

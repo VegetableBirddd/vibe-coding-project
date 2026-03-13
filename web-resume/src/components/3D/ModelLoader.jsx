@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export function ModelLoader({ url, fallback = null, onError, ...props }) {
   const { scene, error } = useGLTF(url)
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    if (scene) {
-      setLoaded(true)
-    }
-  }, [scene])
 
   useEffect(() => {
     if (error && onError) {
@@ -17,11 +10,7 @@ export function ModelLoader({ url, fallback = null, onError, ...props }) {
     }
   }, [error, onError])
 
-  if (error) {
-    return fallback
-  }
-
-  if (!loaded) {
+  if (error || !scene) {
     return fallback
   }
 

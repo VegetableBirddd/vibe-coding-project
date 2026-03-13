@@ -1,6 +1,10 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+
+const seededRandom = (seed) => {
+  const x = Math.sin(seed * 12.9898 + 78.233) * 43758.5453
+  return x - Math.floor(x)
+}
 
 export function ParticleSystem({ count = 800 }) {
   const pointsRef = useRef()
@@ -10,12 +14,18 @@ export function ParticleSystem({ count = 800 }) {
     const colors = new Float32Array(count * 3)
     
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 20
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 20
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20
+      const r1 = seededRandom(i)
+      const r2 = seededRandom(i + count)
+      const r3 = seededRandom(i + count * 2)
+      const r4 = seededRandom(i + count * 3)
+      const r5 = seededRandom(i + count * 4)
+      
+      positions[i * 3] = (r1 - 0.5) * 20
+      positions[i * 3 + 1] = (r2 - 0.5) * 20
+      positions[i * 3 + 2] = (r3 - 0.5) * 20
 
-      colors[i * 3] = Math.random() * 0.5 + 0.5
-      colors[i * 3 + 1] = Math.random() * 0.3 + 0.7
+      colors[i * 3] = r4 * 0.5 + 0.5
+      colors[i * 3 + 1] = r5 * 0.3 + 0.7
       colors[i * 3 + 2] = 1
     }
     
