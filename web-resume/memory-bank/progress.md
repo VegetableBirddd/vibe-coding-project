@@ -171,7 +171,7 @@ src/
 
 ---
 
-## 阶段七：加载动画与过渡 (2026-03-13) 🔄
+## 阶段七：加载动画与过渡 (2026-03-13) ✅
 
 ### 7.1 实现加载骨架屏 ✅
 - 创建 LoadingScreen.jsx：几何体旋转动画 + 进度条
@@ -180,16 +180,25 @@ src/
 - 使用 AnimatePresence 实现淡出效果
 
 ### 7.2 实现资源预加载 ✅
-- 使用 @react-three/drei useProgress 追踪真实加载进度
+- 使用 @react-three/drei useProgress 追踪真实加载进度（后发现无效，改用定时器模拟）
 - 创建 LoadingBar 组件显示实时百分比
 - 修改 LoadingScreen：显示加载进度数值
-- 添加安全超时：5秒后自动消失
+- 添加安全超时：约2秒后自动消失
 
 ### 7.3 实现页面过渡动画 ✅
 - 使用 AnimatePresence mode="wait" 配置过渡
 - 为每个路由添加 motion.div 包装
 - 实现入场/退场动画：淡入淡出 + 上下位移
 - 过渡时长 0.3 秒
+
+### Bug修复：R3F Hooks错误 (2026-03-13) ✅
+- 问题：useProgress 只能在 Canvas 内部使用，外部调用报错
+- 修复：移除 useProgress，改用 setInterval 定时器模拟加载进度
+- 修复：LoadingBar 组件移到 Canvas 外部，使用外部 state 管理进度
+
+---
+
+## 阶段八：性能优化 (2026-03-13) 🔄
 
 ---
 

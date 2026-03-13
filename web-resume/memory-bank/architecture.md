@@ -13,7 +13,8 @@ src/
 │   │   ├── Header.jsx       # 顶部导航栏，包含 Logo 和导航链接
 │   │   ├── Footer.jsx       # 页脚，显示版权信息
 │   │   ├── Skills.jsx       # 技能卡片组件，进度条动画
-│   │   └── Timeline.jsx     # 经历时间轴组件，垂直布局
+│   │   ├── Timeline.jsx     # 经历时间轴组件，垂直布局
+│   │   └── LoadingScreen.jsx # 初始加载界面，3D旋转几何体 + 进度条
 │   │
 │   ├── 3D/                  # 3D 渲染组件（Three.js/R3F）
 │   │   ├── CanvasWrapper.jsx    # R3F Canvas 容器，配置相机/光照/OrbitControls
@@ -75,6 +76,20 @@ src/
 - 左侧竖线 + 圆点设计
 - 每项包含：year(年份)、title(职位)、company(公司)、description(描述)
 - 滚动入场动画，带 stagger 延迟效果
+
+### LoadingScreen.jsx
+- 初始加载界面，在应用首次渲染时显示
+- 3D 动画：八面体 + 圆环旋转（使用 R3F Canvas）
+- 进度条：使用 setInterval 定时器模拟加载进度（约2秒）
+- 动画：AnimatePresence 实现淡出效果
+- 重要：useProgress 仅在 Canvas 内部可用，外部加载需模拟
+
+### App.jsx
+- 根组件，配置 React Router 和全局布局
+- AnimatedRoutes：使用 AnimatePresence + motion.div 实现页面过渡
+- 过渡模式：mode="wait" 确保当前页面退出后再进入新页面
+- 动画效果：opacity 0→1 + y 20→0，时长 0.3 秒
+- 路由：/, /about, /projects, /contact
 
 ### About.jsx
 - 关于页面主组件，整合 Skills 和 Timeline
