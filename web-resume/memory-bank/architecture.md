@@ -19,7 +19,8 @@ src/
 │   ├── 3D/                  # 3D 渲染组件（Three.js/R3F）
 │   │   ├── CanvasWrapper.jsx    # R3F Canvas 容器，配置相机/光照/OrbitControls
 │   │   ├── Avatar.jsx           # 3D头像组件，球体+方块组合，悬停缩放交互
-│   │   ├── ParticleSystem.jsx   # 背景粒子系统，800个粒子缓慢旋转
+│   │   ├── ParticleSystem.jsx   # 背景粒子系统，800个粒子缓慢旋转（原始版本）
+│   │   ├── ParticleSystems.jsx  # 多种炫酷粒子系统集合，支持6种效果
 │   │   ├── RotatingBox.jsx      # 旋转立方体（开发调试用）
 │   │   ├── ModelLoader.jsx      # GLTF模型加载器，使用useGLTF
 │   │   └── Effects.jsx          # 后处理效果组件，Bloom/Vignette/ChromaticAberration
@@ -33,7 +34,8 @@ src/
 │   └── Contact.jsx         # 联系页面，表单
 │
 ├── hooks/                   # 自定义 React Hooks
-│   └── useDevicePerformance.js  # 设备性能检测，识别移动端/低性能设备
+│   ├── useDevicePerformance.js  # 设备性能检测，识别移动端/低性能设备
+│   └── useRandomParticleType.js # 随机粒子类型选择，进入首页时随机展示一种粒子效果
 │
 ├── stores/                  # 状态管理（待开发，可选 Zustand/Context）
 │
@@ -75,11 +77,30 @@ src/
 - 800个粒子，使用Float32Array存储位置和颜色
 - 缓慢旋转动画，不影响前景交互
 
+### ParticleSystems.jsx
+- 多种炫酷粒子系统集合组件
+- 支持6种粒子效果类型：
+  - **Galaxy**: 螺旋星系分布，蓝色到紫色渐变，绕中心旋转
+  - **Wave**: 从中心向外扩散的正弦波纹动画
+  - **Smoke**: 噪声驱动的烟雾流动效果，半透明
+  - **Network**: 粒子间连线形成科技感网络（150个粒子）
+  - **Tornado**: 螺旋上升的粒子流，橙色到红色渐变
+  - **Meteor**: 斜向下落的流星效果，循环重置
+- 使用 seededRandom 确保确定性随机（避免 React lint 报错）
+- 响应式适配：移动端粒子数从600降至300
+
+### useRandomParticleType.js
+- 自定义 Hook，用于随机选择粒子系统类型
+- 使用 useMemo + seededRandom 生成确定性随机
+- 返回值：粒子类型字符串（galaxy/wave/smoke/network/tornado/meteor）
+- 用途：HomeScene 进入首页时随机展示一种粒子效果
+
 ### HomeScene.jsx
 - 页面布局：absolute定位的Canvas背景 + pointer-events-none的文字层
 - 关键：文字层必须设置pointer-events-none，否则阻挡Canvas事件
 - 整合所有3D组件到一个场景
-- 响应式适配：使用 useDevicePerformance 检测设备，移动端粒子数从800降至400
+- 响应式适配：使用 useDevicePerformance 检测设备，移动端粒子数降至300
+- 粒子系统：使用 useRandomParticleType 随机选择粒子类型，进入首页时展示不同效果
 
 ### Skills.jsx
 - 技能展示卡片组件，展示技能名称、等级百分比、分类

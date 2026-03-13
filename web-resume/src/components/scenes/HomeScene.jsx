@@ -1,17 +1,21 @@
 import { CanvasWrapper } from '../3D/CanvasWrapper'
 import { Avatar } from '../3D/Avatar'
-import { ParticleSystem } from '../3D/ParticleSystem'
+import { ParticleSystems } from '../3D/ParticleSystems'
 import { useDevicePerformance } from '../../hooks/useDevicePerformance'
+import { useRandomParticleType } from '../../hooks/useRandomParticleType'
 
 export function HomeScene() {
   const { isMobile, isLowEnd } = useDevicePerformance()
-  const particleCount = isMobile ? 400 : isLowEnd ? 500 : 800
+  const particleType = useRandomParticleType()
+  const particleCount = isMobile ? 300 : isLowEnd ? 400 : 600
+
+  if (!particleType) return null
 
   return (
     <div className="relative h-[calc(100vh-4rem)]">
       <div className="absolute inset-0 z-0">
         <CanvasWrapper>
-          <ParticleSystem count={particleCount} />
+          <ParticleSystems type={particleType} count={particleCount} />
           <Avatar />
         </CanvasWrapper>
       </div>

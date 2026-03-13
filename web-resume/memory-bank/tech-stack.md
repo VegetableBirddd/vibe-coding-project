@@ -33,9 +33,13 @@
 src/
 ├── components/
 │   ├── 3D/           # 3D组件
+│   │   ├── ParticleSystems.jsx  # 多种粒子系统集合
+│   │   ├── ParticleSystem.jsx   # 原有基础粒子系统
+│   │   └── ...
 │   ├── ui/           # UI组件
 │   └── scenes/       # 场景组件
 ├── hooks/            # 自定义hooks
+│   └── useRandomParticleType.js  # 随机粒子类型选择
 ├── stores/           # 状态管理
 ├── assets/           # 静态资源
 │   └── models/       # 3D模型

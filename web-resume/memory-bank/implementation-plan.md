@@ -607,6 +607,71 @@ npm install -D tailwindcss @tailwindcss/vite
 
 ---
 
+## 功能更新：多种炫酷粒子系统 (2026-03-13) 🔄
+
+### 任务描述
+首页当前只有一种基础粒子系统（800个粒子缓慢旋转），计划新增多种炫酷效果，进入首页时随机展示一种。
+
+### 计划新增的粒子系统类型
+
+#### 1. 粒子星系 (ParticleGalaxy)
+- 螺旋星系分布，带状结构
+- 粒子沿星系臂旋转
+- 颜色：蓝色到紫色渐变
+
+#### 2. 粒子波浪 (ParticleWave)
+- 从中心向外扩散的波纹
+- 正弦波形运动
+- 颜色：青色到白色渐变
+
+#### 3. 粒子烟雾 (ParticleSmoke)
+- 烟雾状流动效果
+- 噪声驱动的运动
+- 颜色：灰色到白色，半透明
+
+#### 4. 粒子连线网格 (ParticleNetwork)
+- 粒子之间有连线
+- 形成网络/科技感效果
+- 颜色：青色/cyan
+
+#### 5. 粒子龙卷风 (ParticleTornado)
+- 螺旋上升的粒子流
+- 底部宽顶部窄
+- 颜色：橙色到红色渐变
+
+#### 6. 粒子流星 (ParticleMeteor)
+- 斜向下落的流星效果
+- 带拖尾
+- 颜色：白色到透明
+
+### 执行步骤
+
+#### 步骤1：重构粒子系统架构
+1. 创建 `src/components/3D/ParticleSystems.jsx` 作为粒子系统集合
+2. 导出多个独立粒子组件：Galaxy, Wave, Smoke, Network, Tornado, Meteor
+3. 创建 `useRandomParticleType` hook 用于随机选择粒子系统
+
+#### 步骤2：实现各类型粒子系统
+1. 实现 ParticleGalaxy - 螺旋星系分布
+2. 实现 ParticleWave - 波纹扩散效果
+3. 实现 ParticleSmoke - 烟雾流动效果
+4. 实现 ParticleNetwork - 连线网络效果
+5. 实现 ParticleTornado - 龙卷风效果
+6. 实现 ParticleMeteor - 流星效果
+
+#### 步骤3：集成到 HomeScene
+1. 修改 HomeScene.jsx 使用新的粒子系统组件
+2. 实现随机选择逻辑（进入首页时随机一种）
+3. 可选：添加切换按钮让用户手动切换粒子效果
+
+### 验证方法
+1. 刷新首页，每次显示不同的粒子效果
+2. 确认6种粒子效果都能正常显示
+3. 动画流畅无卡顿
+4. 不影响前景内容交互
+
+---
+
 ## 关键验证命令汇总
 
 ```bash

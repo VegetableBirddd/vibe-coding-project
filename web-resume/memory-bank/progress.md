@@ -293,9 +293,65 @@ dist/assets/
 
 ---
 
+## 功能更新：多种炫酷粒子系统 (2026-03-13) ✅
+
+### 任务描述
+首页当前只有一种基础粒子系统（800个粒子缓慢旋转），计划新增多种炫酷效果，进入首页时随机展示一种。
+
+### 实现内容
+
+#### 1. 创建 useRandomParticleType hook
+- 创建 `src/hooks/useRandomParticleType.js`
+- 使用 seededRandom 生成确定性的随机种子
+- 进入首页时随机选择一种粒子效果
+
+#### 2. 创建 ParticleSystems.jsx - 6种粒子系统
+- **ParticleGalaxy**: 螺旋星系分布，蓝色到紫色渐变，绕中心旋转
+- **ParticleWave**: 从中心向外扩散的正弦波纹动画，青色到白色渐变
+- **ParticleSmoke**: 噪声驱动的烟雾流动效果，灰色到白色，半透明
+- **ParticleNetwork**: 粒子间连线形成科技感网络，青色连线
+- **ParticleTornado**: 螺旋上升的粒子流，底部宽顶部窄，橙色到红色渐变
+- **ParticleMeteor**: 斜向下落的流星效果，循环重置
+
+#### 3. 修改 HomeScene.jsx
+- 引入新的 ParticleSystems 组件
+- 使用 useRandomParticleType 随机选择粒子类型
+- 适配移动端：粒子数从 600 降至 300
+
+### 验证
+- `npm run lint` - 通过
+- `npm run build` - 构建成功
+
+---
+
 ## 技术说明
 
 ## 开发者工作记录
+
+### 2026-03-13 - 新增多种炫酷粒子系统
+
+**执行的操作：**
+1. 阅读 memory-bank 所有文档
+2. 更新 implementation-plan.md 和 tech-stack.md 添加粒子系统计划
+3. 创建 `src/hooks/useRandomParticleType.js` - 随机粒子类型选择 hook
+4. 创建 `src/components/3D/ParticleSystems.jsx` - 包含6种粒子系统：
+   - Galaxy（螺旋星系）
+   - Wave（波纹扩散）
+   - Smoke（烟雾流动）
+   - Network（连线网络）
+   - Tornado（龙卷风）
+   - Meteor（流星）
+5. 修改 `src/components/scenes/HomeScene.jsx` 集成新粒子系统
+6. 运行 `npm run lint` 修复所有 lint 错误
+7. 运行 `npm run build` 构建成功
+8. 更新 progress.md 记录进度
+
+**关键实现：**
+- 使用 seededRandom 确保确定性随机（避免 lint 报错）
+- 粒子系统使用 BufferGeometry 优化性能
+- 响应式适配：移动端粒子数降至 300
+- 进入首页时随机展示一种粒子效果
+- ParticleNetwork 优化：粒子数 400→150，连线阈值 2.5→3，平衡效果与性能
 
 ### 2026-03-13 - 最终测试与部署准备
 
