@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import { Header } from './components/ui/Header'
 import { Footer } from './components/ui/Footer'
@@ -91,7 +91,7 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <LoadingScreen />
       <div className="min-h-screen bg-gray-900 text-white">
         <Header />
@@ -100,7 +100,7 @@ function App() {
         </main>
         <Footer />
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
