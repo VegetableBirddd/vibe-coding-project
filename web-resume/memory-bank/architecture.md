@@ -5,7 +5,7 @@
 ```
 src/
 ├── main.jsx                 # 应用入口，挂载 React 根组件
-├── App.jsx                  # 根组件，配置路由和布局
+├── App.jsx                  # 根组件，配置路由和全局布局
 ├── index.css                # 全局样式，引入 Tailwind CSS
 │
 ├── components/
@@ -13,17 +13,20 @@ src/
 │   │   ├── Header.jsx       # 顶部导航栏，包含 Logo 和导航链接
 │   │   └── Footer.jsx       # 页脚，显示版权信息
 │   │
-│   ├── 3D/                  # 3D 渲染组件
-│   │   └── (待添加)          # Three.js/R3F 组件
+│   ├── 3D/                  # 3D 渲染组件（Three.js/R3F）
+│   │   ├── CanvasWrapper.jsx    # R3F Canvas 容器，配置相机/光照/OrbitControls
+│   │   ├── Avatar.jsx           # 3D头像组件，球体+方块组合，悬停缩放交互
+│   │   ├── ParticleSystem.jsx   # 背景粒子系统，800个粒子缓慢旋转
+│   │   ├── RotatingBox.jsx      # 旋转立方体（开发调试用）
+│   │   └── ModelLoader.jsx      # GLTF模型加载器，使用useGLTF
 │   │
-│   └── scenes/              # 页面级 3D 场景
-│       └── HomeScene.jsx    # 首页 3D 场景占位
+│   └── scenes/               # 页面级 3D 场景
+│       └── HomeScene.jsx    # 首页场景，整合Canvas+Avatar+ParticleSystem
 │
-├── pages/                   # 页面组件（待开发）
-│   ├── Home.jsx
-│   ├── About.jsx
-│   ├── Projects.jsx
-│   └── Contact.jsx
+├── pages/                   # 页面组件
+│   ├── About.jsx           # 关于页面，技能展示
+│   ├── Projects.jsx        # 项目页面，项目卡片网格
+│   └── Contact.jsx         # 联系页面，表单
 │
 ├── hooks/                   # 自定义 React Hooks（待开发）
 │
@@ -32,6 +35,31 @@ src/
 └── assets/
     └── models/              # 3D 模型文件 (.glb/.gltf)
 ```
+
+## 核心组件说明
+
+### CanvasWrapper.jsx
+- R3F Canvas容器，处理WebGL上下文
+- 配置：相机位置[0,0,5]、FOV 75、dpr[1,2]、high-performance
+- 光照：AmbientLight + DirectionalLight
+- 交互：OrbitControls支持鼠标拖拽旋转
+
+### Avatar.jsx
+- 3D头像占位，由球体(身体)和方块(头部)组成
+- 旋转动画：useFrame每帧更新rotation.y
+- 悬停交互：onPointerOver/onPointerOut触发状态变化
+- 缩放动画：MathUtils.lerp实现平滑过渡
+- 光标变化：useCursor在悬停时改变鼠标指针
+
+### ParticleSystem.jsx
+- 背景粒子效果，使用BufferGeometry优化性能
+- 800个粒子，使用Float32Array存储位置和颜色
+- 缓慢旋转动画，不影响前景交互
+
+### HomeScene.jsx
+- 页面布局：absolute定位的Canvas背景 + pointer-events-none的文字层
+- 关键：文字层必须设置pointer-events-none，否则阻挡Canvas事件
+- 整合所有3D组件到一个场景
 
 ## 技术选型说明
 
